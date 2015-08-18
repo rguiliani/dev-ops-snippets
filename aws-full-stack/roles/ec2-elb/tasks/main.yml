@@ -1,0 +1,17 @@
+---
+  - name: Set up load balancer
+    ec2_elb_lb:
+      name: "{{ env }}-lb"
+      region: "{{ region }}"
+      state: present
+      subnets:
+        - "{{ web_tier_subnet_1 }}"
+        - "{{ web_tier_subnet_2 }}"
+      security_group_ids: ["{{ web_sec_group.group_id }}"]
+      listeners:
+        - protocol: http
+          load_balancer_port: 80
+          instance_port: 80
+      # cannot tag ELB via ec2_elb_lb module yet
+      #tags:
+      #  - env: "{{ env }}"
